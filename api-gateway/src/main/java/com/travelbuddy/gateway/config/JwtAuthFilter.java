@@ -20,6 +20,7 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
     private final List<String> openPaths = List.of(
             "/api/auth/register",
             "/api/auth/login",
+            "/api/auth/forgot-password",
             "/eureka",
             "/ws"
     );
@@ -65,7 +66,8 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
 
     private boolean isPublicRead(ServerHttpRequest request) {
         return request.getMethod() == HttpMethod.GET
-                && request.getPath().value().startsWith("/api/trips");
+                && (request.getPath().value().startsWith("/api/trips")
+                || request.getPath().value().startsWith("/api/reviews"));
     }
 
     @Override

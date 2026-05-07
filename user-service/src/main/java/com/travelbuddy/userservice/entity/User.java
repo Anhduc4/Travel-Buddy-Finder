@@ -23,6 +23,13 @@ public class User {
     @Column(columnDefinition = "TEXT")
     private String bio;
 
+    private String gender;
+
+    private Integer age;
+
+    @Column(columnDefinition = "TEXT")
+    private String interests;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
 
@@ -46,6 +53,12 @@ public class User {
     public void setPassword(String password) { this.password = password; }
     public String getBio() { return bio; }
     public void setBio(String bio) { this.bio = bio; }
+    public String getGender() { return gender; }
+    public void setGender(String gender) { this.gender = gender; }
+    public Integer getAge() { return age; }
+    public void setAge(Integer age) { this.age = age; }
+    public String getInterests() { return interests; }
+    public void setInterests(String interests) { this.interests = interests; }
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 }

@@ -21,7 +21,6 @@ export default function Footer() {
           <div className="grid gap-2 text-sm font-bold text-[#6b7f86]">
             <Link to="/" className="hover:text-[#177a78]">Danh sách chuyến đi</Link>
             <Link to="/trips/create" className="hover:text-[#177a78]">Tạo chuyến đi</Link>
-            <Link to="/login" className="hover:text-[#177a78]">Đăng nhập</Link>
           </div>
         </div>
         <div>

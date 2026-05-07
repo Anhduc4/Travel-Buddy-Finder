@@ -13,8 +13,10 @@ export default function TripCard({ trip }) {
   return (
     <Link to={`/trips/${trip.id}`} className="card group block cursor-pointer transition-all duration-300 hover:-translate-y-1">
       <div className={`relative h-44 overflow-hidden bg-gradient-to-br ${tone.bg}`}>
-        <div className="absolute left-5 top-5 rounded-full bg-white/80 px-3 py-1 text-xs font-black text-[#17313b] shadow-sm">
-          {tone.mark}
+        {trip.imageUrl && <img src={trip.imageUrl} alt={trip.destination} className="absolute inset-0 h-full w-full object-cover" />}
+        {trip.imageUrl && <div className="absolute inset-0 bg-gradient-to-t from-[#17313b]/80 via-[#17313b]/20 to-transparent" />}
+        <div className="absolute left-5 top-5 rounded-full bg-white/85 px-3 py-1 text-xs font-black text-[#17313b] shadow-sm">
+          {trip.completed ? 'HOÀN THÀNH' : tone.mark}
         </div>
         <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-white/30" />
         <div className="absolute bottom-5 left-5 right-5">
@@ -38,8 +40,8 @@ export default function TripCard({ trip }) {
         </div>
         {tags.length > 0 && (
           <div className="mt-4 flex flex-wrap gap-2">
-            {tags.slice(0, 3).map((tag, i) => (
-              <span key={i} className="pop-chip">{tag}</span>
+            {tags.slice(0, 3).map((tag) => (
+              <span key={tag} className="pop-chip">{tag}</span>
             ))}
           </div>
         )}

@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { authService } from '../api/services';
 
 export default function RegisterPage() {
-  const [form, setForm] = useState({ name: '', email: '', password: '', bio: '' });
+  const [form, setForm] = useState({ name: '', email: '', password: '', bio: '', gender: '', age: '', interests: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -13,7 +13,7 @@ export default function RegisterPage() {
     setLoading(true);
     setError('');
     try {
-      const res = await authService.register(form);
+      const res = await authService.register({ ...form, age: form.age ? Number(form.age) : null });
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('user', JSON.stringify(res.data));
       navigate('/');
@@ -39,12 +39,8 @@ export default function RegisterPage() {
         </div>
 
         <div className="mb-5 grid gap-3 sm:grid-cols-2">
-          <button type="button" onClick={() => handleSocialSignup('Google')} className="btn-secondary py-3 text-sm">
-            Đăng ký Gmail
-          </button>
-          <button type="button" onClick={() => handleSocialSignup('Facebook')} className="btn-secondary py-3 text-sm">
-            Đăng ký Facebook
-          </button>
+          <button type="button" onClick={() => handleSocialSignup('Google')} className="btn-secondary py-3 text-sm">Đăng ký Gmail</button>
+          <button type="button" onClick={() => handleSocialSignup('Facebook')} className="btn-secondary py-3 text-sm">Đăng ký Facebook</button>
         </div>
 
         <div className="mb-5 flex items-center gap-3">
@@ -55,14 +51,20 @@ export default function RegisterPage() {
 
         {error && <div className="mb-4 rounded-2xl bg-[#fff0f0] p-3 text-sm font-bold text-[#d94848]">{error}</div>}
         <form onSubmit={handleSubmit} className="space-y-4">
-          <input type="text" placeholder="Họ và tên" className="input-field" required
-            value={form.name} onChange={(e) => setForm({...form, name: e.target.value})} />
-          <input type="email" placeholder="Email" className="input-field" required
-            value={form.email} onChange={(e) => setForm({...form, email: e.target.value})} />
-          <input type="password" placeholder="Mật khẩu" className="input-field" required
-            value={form.password} onChange={(e) => setForm({...form, password: e.target.value})} />
-          <textarea placeholder="Bạn thích kiểu du lịch nào? Biển, núi, food tour, chụp ảnh..." className="input-field" rows="4"
-            value={form.bio} onChange={(e) => setForm({...form, bio: e.target.value})} />
+          <input type="text" placeholder="Họ và tên" className="input-field" required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
+          <input type="email" placeholder="Email" className="input-field" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
+          <input type="password" placeholder="Mật khẩu" className="input-field" required value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} />
+          <div className="grid gap-3 sm:grid-cols-2">
+            <select className="input-field" value={form.gender} onChange={(e) => setForm({ ...form, gender: e.target.value })}>
+              <option value="">Giới tính</option>
+              <option value="Nam">Nam</option>
+              <option value="Nữ">Nữ</option>
+              <option value="Khác">Khác</option>
+            </select>
+            <input type="number" min="1" max="120" placeholder="Tuổi" className="input-field" value={form.age} onChange={(e) => setForm({ ...form, age: e.target.value })} />
+          </div>
+          <input type="text" placeholder="Sở thích: biển, ăn uống, chụp ảnh" className="input-field" value={form.interests} onChange={(e) => setForm({ ...form, interests: e.target.value })} />
+          <textarea placeholder="Bạn thích kiểu du lịch nào? Biển, núi, food tour, chụp ảnh..." className="input-field" rows="4" value={form.bio} onChange={(e) => setForm({ ...form, bio: e.target.value })} />
           <button type="submit" className="btn-primary w-full" disabled={loading}>
             {loading ? 'Đang tạo tài khoản...' : 'Tạo tài khoản'}
           </button>

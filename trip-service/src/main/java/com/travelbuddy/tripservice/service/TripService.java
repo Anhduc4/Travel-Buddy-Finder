@@ -25,6 +25,7 @@ public class TripService {
         trip.setEndDate(request.getEndDate());
         trip.setMaxPeople(request.getMaxPeople());
         trip.setTags(request.getTags());
+        trip.setImageUrl(request.getImageUrl());
         trip = tripRepository.save(trip);
         return toResponse(trip);
     }
@@ -47,8 +48,16 @@ public class TripService {
         trip.setEndDate(request.getEndDate());
         trip.setMaxPeople(request.getMaxPeople());
         trip.setTags(request.getTags());
+        trip.setImageUrl(request.getImageUrl());
         trip = tripRepository.save(trip);
         return toResponse(trip);
+    }
+
+    public TripResponse completeTrip(Long id, Long userId) {
+        Trip trip = tripRepository.findById(id).orElseThrow(() -> new RuntimeException("Trip not found"));
+        if (!trip.getCreatorId().equals(userId)) throw new RuntimeException("Not authorized");
+        trip.setCompleted(true);
+        return toResponse(tripRepository.save(trip));
     }
 
     public void deleteTrip(Long id, Long userId) {
@@ -63,6 +72,7 @@ public class TripService {
 
     private TripResponse toResponse(Trip t) {
         return new TripResponse(t.getId(), t.getCreatorId(), t.getDestination(), t.getDescription(),
-                t.getStartDate(), t.getEndDate(), t.getMaxPeople(), t.getTags(), t.getCreatedAt());
+                t.getStartDate(), t.getEndDate(), t.getMaxPeople(), t.getTags(),
+                t.getImageUrl(), t.isCompleted(), t.getCreatedAt());
     }
 }

@@ -9,6 +9,7 @@ public class TripRequest {
     private LocalDate endDate;
     private int maxPeople;
     private String tags;
+    private String imageUrl;
 
     public String getDestination() { return destination; }
     public void setDestination(String d) { this.destination = d; }
@@ -22,4 +23,6 @@ public class TripRequest {
     public void setMaxPeople(int m) { this.maxPeople = m; }
     public String getTags() { return tags; }
     public void setTags(String t) { this.tags = t; }
+    public String getImageUrl() { return imageUrl; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 }

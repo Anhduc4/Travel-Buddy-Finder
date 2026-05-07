@@ -40,6 +40,18 @@ public class JoinRequestController {
         return ResponseEntity.ok(service.rejectRequest(id, authenticatedUserId));
     }
 
+    @PutMapping("/{id}/remove")
+    public ResponseEntity<JoinRequest> remove(@PathVariable Long id, Authentication auth) {
+        Long authenticatedUserId = (Long) auth.getPrincipal();
+        return ResponseEntity.ok(service.removeParticipant(id, authenticatedUserId));
+    }
+
+    @GetMapping("/trip/{tripId}/me/approved")
+    public ResponseEntity<Boolean> isApprovedForTrip(@PathVariable Long tripId, Authentication auth) {
+        Long userId = (Long) auth.getPrincipal();
+        return ResponseEntity.ok(service.isApprovedParticipant(tripId, userId));
+    }
+
     @GetMapping("/trip/{tripId}")
     public ResponseEntity<List<JoinRequest>> getByTrip(@PathVariable Long tripId) {
         return ResponseEntity.ok(service.getByTripId(tripId));

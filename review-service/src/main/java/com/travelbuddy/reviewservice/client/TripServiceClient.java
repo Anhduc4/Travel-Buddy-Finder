@@ -47,7 +47,9 @@ public class TripServiceClient {
      */
     public boolean isTripCompleted(Long tripId) {
         Map<String, Object> trip = getTripById(tripId);
-        if (trip == null || trip.get("endDate") == null) return false;
+        if (trip == null) return false;
+        if (Boolean.TRUE.equals(trip.get("completed"))) return true;
+        if (trip.get("endDate") == null) return false;
         try {
             LocalDate endDate = LocalDate.parse(trip.get("endDate").toString());
             return endDate.isBefore(LocalDate.now());
@@ -64,6 +66,14 @@ public class TripServiceClient {
         Map<String, Object> trip = getTripById(tripId);
         if (trip != null && trip.containsKey("creatorId")) {
             return ((Number) trip.get("creatorId")).longValue();
+        }
+        return null;
+    }
+
+    public String getDestination(Long tripId) {
+        Map<String, Object> trip = getTripById(tripId);
+        if (trip != null && trip.get("destination") != null) {
+            return trip.get("destination").toString();
         }
         return null;
     }

@@ -29,6 +29,9 @@ public class UserService {
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setBio(request.getBio());
+        user.setGender(request.getGender());
+        user.setAge(request.getAge());
+        user.setInterests(request.getInterests());
         user = userRepository.save(user);
 
         String token = jwtUtil.generateToken(user.getId(), user.getEmail());
@@ -50,6 +53,32 @@ public class UserService {
     public UserResponse getUserById(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        return new UserResponse(user.getId(), user.getName(), user.getEmail(), user.getBio());
+        return toResponse(user);
+    }
+
+    public UserResponse updateUser(Long id, Long authenticatedUserId, UserUpdateRequest request) {
+        if (!id.equals(authenticatedUserId)) {
+            throw new RuntimeException("Not authorized");
+        }
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setName(request.getName());
+        user.setBio(request.getBio());
+        user.setGender(request.getGender());
+        user.setAge(request.getAge());
+        user.setInterests(request.getInterests());
+        return toResponse(userRepository.save(user));
+    }
+
+    public void forgotPassword(ForgotPasswordRequest request) {
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new RuntimeException("Email not found"));
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        userRepository.save(user);
+    }
+
+    private UserResponse toResponse(User user) {
+        return new UserResponse(user.getId(), user.getName(), user.getEmail(), user.getBio(),
+                user.getGender(), user.getAge(), user.getInterests());
     }
 }

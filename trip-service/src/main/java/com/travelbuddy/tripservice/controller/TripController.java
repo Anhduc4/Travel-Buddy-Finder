@@ -50,4 +50,10 @@ public class TripController {
         tripService.deleteTrip(id, userId);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/{id}/complete")
+    public ResponseEntity<TripResponse> completeTrip(@PathVariable Long id, Authentication auth) {
+        Long userId = (Long) auth.getPrincipal();
+        return ResponseEntity.ok(tripService.completeTrip(id, userId));
+    }
 }

@@ -8,6 +8,7 @@ import CreateTripPage from './pages/CreateTripPage';
 import TripDetailPage from './pages/TripDetailPage';
 import ChatPage from './pages/ChatPage';
 import ProfilePage from './pages/ProfilePage';
+import DestinationPage from './pages/DestinationPage';
 
 function PrivateRoute({ children }) {
   const token = localStorage.getItem('token');
@@ -28,6 +29,7 @@ export default function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/trips/create" element={<PrivateRoute><CreateTripPage /></PrivateRoute>} />
             <Route path="/trips/:id" element={<TripDetailPage />} />
+            <Route path="/destinations/:destination" element={<DestinationPage />} />
             <Route path="/chat/:tripId" element={<PrivateRoute><ChatPage /></PrivateRoute>} />
             <Route path="/profile/:id" element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
           </Routes>

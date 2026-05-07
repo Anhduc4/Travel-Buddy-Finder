@@ -57,7 +57,8 @@ export default function HomePage() {
             Tìm bạn đồng hành cho chuyến đi đúng gu.
           </h1>
           <p className="mt-5 max-w-2xl text-lg font-bold leading-8 text-[#6b7f86]">
-            Không chỉ là một chuyến đi — mà là tìm đúng hội để đi cùng 🌍          </p>
+            Không chỉ là một chuyến đi, mà là tìm đúng hội để đi cùng.
+          </p>
           <div className="mt-7 flex flex-wrap gap-3">
             <Link to="/trips/create" className="btn-primary">Tạo chuyến đi</Link>
             <a href="#trip-board" className="btn-secondary">Xem chuyến đang mở</a>
@@ -65,23 +66,23 @@ export default function HomePage() {
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
-          <div className="card relative min-h-[26rem] sm:col-span-2">
-            <img src={landmarks[0].image} alt={landmarks[0].name} className="h-full min-h-[26rem] w-full object-cover" />
+          <Link to={`/destinations/${encodeURIComponent(landmarks[0].name)}`} className="card group relative min-h-[26rem] sm:col-span-2">
+            <img src={landmarks[0].image} alt={landmarks[0].name} className="h-full min-h-[26rem] w-full object-cover transition-transform duration-300 group-hover:scale-105" />
             <div className="absolute inset-0 bg-gradient-to-t from-[#17313b]/78 via-[#17313b]/18 to-transparent" />
             <div className="absolute bottom-6 left-6 right-6 text-white">
               <p className="text-xs font-black uppercase tracking-[0.22em] text-[#ffd166]">điểm đến nổi bật</p>
               <h2 className="mt-2 text-4xl font-black leading-none">{landmarks[0].name}</h2>
               <p className="mt-2 font-bold text-white/80">{landmarks[0].place}</p>
             </div>
-          </div>
+          </Link>
           {landmarks.slice(1).map((item) => (
-            <div key={item.name} className="soft-panel overflow-hidden p-2">
+            <Link to={`/destinations/${encodeURIComponent(item.name)}`} key={item.name} className="soft-panel overflow-hidden p-2 transition-all hover:-translate-y-1 hover:bg-white/90">
               <img src={item.image} alt={item.name} className="h-36 w-full rounded-[1.25rem] object-cover" />
               <div className="p-3">
                 <p className="text-lg font-black text-[#17313b]">{item.name}</p>
                 <p className="text-sm font-bold text-[#6b7f86]">{item.place}</p>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </section>

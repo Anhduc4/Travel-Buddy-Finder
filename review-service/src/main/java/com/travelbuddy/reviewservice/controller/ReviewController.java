@@ -1,6 +1,8 @@
 package com.travelbuddy.reviewservice.controller;
 
+import com.travelbuddy.reviewservice.dto.DestinationReviewRequest;
 import com.travelbuddy.reviewservice.dto.ReviewRequest;
+import com.travelbuddy.reviewservice.entity.DestinationReview;
 import com.travelbuddy.reviewservice.entity.Review;
 import com.travelbuddy.reviewservice.service.ReviewService;
 import jakarta.validation.Valid;
@@ -30,5 +32,17 @@ public class ReviewController {
     @GetMapping("/user/{id}/average")
     public ResponseEntity<Map<String, Double>> getAverage(@PathVariable Long id) {
         return ResponseEntity.ok(Map.of("averageRating", service.getAverageRating(id)));
+    }
+
+    @PostMapping("/destinations")
+    public ResponseEntity<DestinationReview> createDestinationReview(@Valid @RequestBody DestinationReviewRequest request,
+                                                                    Authentication auth) {
+        Long reviewerId = (Long) auth.getPrincipal();
+        return ResponseEntity.ok(service.createDestinationReview(request, reviewerId));
+    }
+
+    @GetMapping("/destinations/{destination}")
+    public ResponseEntity<List<DestinationReview>> getDestinationReviews(@PathVariable String destination) {
+        return ResponseEntity.ok(service.getDestinationReviews(destination));
     }
 }

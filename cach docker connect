@@ -1,0 +1,36 @@
+Bước 1: Tải & cài Docker Desktop
+Tải tại: https://www.docker.com/products/docker-desktop/
+Cài xong restart máy
+Mở Docker Desktop lên, đợi đến khi thanh dưới cùng hiện "Engine running" (màu xanh)
+Bước 2: Mở Terminal tại thư mục project
+Có 2 cách:
+
+Cách 1: Mở VS Code → mở thư mục project → Ctrl + ~ (mở terminal)
+Cách 2: Mở PowerShell → cd vào thư mục project
+Bước 3: Tạo file .env
+powershell
+cp .env.example .env
+Bước 4: Chạy 1 lệnh duy nhất
+powershell
+docker-compose up -d --build
+Xong! Docker sẽ tự động:
+
+Đọc file docker-compose.yml trong thư mục hiện tại
+Tìm code trong từng thư mục (./user-service, ./frontend, ...)
+Đọc Dockerfile trong mỗi thư mục để biết cách build
+Build code → tạo containers → khởi động tất cả
+Thư mục project của bạn
+│
+├── docker-compose.yml    ← Docker đọc file này, nó chỉ định:
+│                            "build: ./user-service" → vào thư mục đó tìm Dockerfile
+│
+├── user-service/
+│   ├── Dockerfile        ← Docker đọc file này để biết cách build service
+│   ├── pom.xml           ← Maven build Java code
+│   └── src/              ← Code Java của bạn
+│
+├── frontend/
+│   ├── Dockerfile        ← Docker đọc file này để build frontend
+│   ├── package.json
+│   └── src/              ← Code React của bạn
+...

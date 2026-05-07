@@ -14,7 +14,8 @@ public class ChatController {
     public ChatController(ChatService chatService) { this.chatService = chatService; }
 
     @GetMapping("/trips/{tripId}/messages")
-    public ResponseEntity<List<ChatMessage>> getMessages(@PathVariable Long tripId) {
-        return ResponseEntity.ok(chatService.getMessagesByTripId(tripId));
+    public ResponseEntity<List<ChatMessage>> getMessages(@PathVariable Long tripId,
+                                                         @RequestHeader("X-User-Id") Long userId) {
+        return ResponseEntity.ok(chatService.getMessagesByTripId(tripId, userId));
     }
 }

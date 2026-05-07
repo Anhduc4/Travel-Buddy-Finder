@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Controller;
 
 import java.security.Principal;
@@ -22,30 +23,19 @@ public class ChatWebSocketController {
         this.chatService = chatService;
     }
 
-    /**
-     * SECURITY FIX: Server derives senderId from authenticated Principal,
-     * ignoring any senderId/senderName sent by the client.
-     * This prevents identity spoofing.
-     */
     @MessageMapping("/chat/{tripId}")
     @SendTo("/topic/chat/{tripId}")
     public ChatMessage sendMessage(@DestinationVariable Long tripId,
                                    ChatMessageDTO dto,
                                    Principal principal) {
-        dto.setTripId(tripId);
-
-        // Override client-provided identity with server-verified identity
-        if (principal != null) {
-            Long authenticatedUserId = (Long) ((org.springframework.security.authentication.UsernamePasswordAuthenticationToken) principal).getPrincipal();
-            dto.setSenderId(authenticatedUserId);
-            // senderName can still come from client for display purposes,
-            // but senderId is always server-authoritative
-            log.debug("Chat message from authenticated user {} in trip {}", authenticatedUserId, tripId);
-        } else {
-            log.warn("🚫 Unauthenticated chat message attempt in trip {}", tripId);
-            // Fallback: use the client-provided senderId (backward compat)
+        if (principal == null) {
+            log.warn("Unauthenticated chat message attempt in trip {}", tripId);
+            throw new IllegalStateException("Login is required to send chat messages");
         }
 
-        return chatService.saveMessage(dto);
+        Long authenticatedUserId = (Long) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
+        dto.setTripId(tripId);
+        log.debug("Chat message from authenticated user {} in trip {}", authenticatedUserId, tripId);
+        return chatService.saveMessage(dto, authenticatedUserId);
     }
 }

@@ -32,6 +32,12 @@ public class Trip {
 
     private String tags;
 
+    @Column(name = "image_url", columnDefinition = "TEXT")
+    private String imageUrl;
+
+    @Column(nullable = false, columnDefinition = "boolean default false")
+    private boolean completed = false;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
 
@@ -54,6 +60,10 @@ public class Trip {
     public void setMaxPeople(int maxPeople) { this.maxPeople = maxPeople; }
     public String getTags() { return tags; }
     public void setTags(String tags) { this.tags = tags; }
+    public String getImageUrl() { return imageUrl; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+    public boolean isCompleted() { return completed; }
+    public void setCompleted(boolean completed) { this.completed = completed; }
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 }

@@ -32,7 +32,12 @@ public class JoinRequestService {
     }
 
     public JoinRequest createRequest(Long tripId, Long userId) {
-        if (repository.existsByTripIdAndUserId(tripId, userId)) {
+        JoinRequest existingRequest = repository.findByTripIdAndUserId(tripId, userId).orElse(null);
+        if (existingRequest != null && ("REJECTED".equals(existingRequest.getStatus()) || "REMOVED".equals(existingRequest.getStatus()))) {
+            existingRequest.setStatus("PENDING");
+            return repository.save(existingRequest);
+        }
+        if (existingRequest != null) {
             throw new IllegalStateException("You already sent a join request for this trip");
         }
         JoinRequest request = new JoinRequest();
@@ -89,6 +94,23 @@ public class JoinRequestService {
         log.info("❌ Join request {} rejected by trip owner {}", id, authenticatedUserId);
 
         return request;
+    }
+
+    public JoinRequest removeParticipant(Long id, Long authenticatedUserId) {
+        JoinRequest request = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Join request not found"));
+
+        verifyTripOwnership(request.getTripId(), authenticatedUserId);
+
+        if (!"APPROVED".equals(request.getStatus())) {
+            throw new IllegalStateException("Only approved participants can be removed");
+        }
+        request.setStatus("REMOVED");
+        return repository.save(request);
+    }
+
+    public boolean isApprovedParticipant(Long tripId, Long userId) {
+        return repository.findByTripIdAndUserIdAndStatus(tripId, userId, "APPROVED").isPresent();
     }
 
     /**
