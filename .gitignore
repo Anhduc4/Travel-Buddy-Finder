@@ -1,0 +1,40 @@
+# =======================
+# Travel Buddy Finder
+# =======================
+
+# --- Java / Maven ---
+target/
+*.jar
+*.war
+*.class
+*.log
+logs/
+
+# --- Node.js / Frontend ---
+node_modules/
+dist/
+build/
+.cache/
+
+# --- Environment ---
+.env
+.env.local
+.env.*.local
+
+# --- IDE ---
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+.project
+.classpath
+.settings/
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Docker ---
+*.pid

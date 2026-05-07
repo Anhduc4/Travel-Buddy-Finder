@@ -1,0 +1,69 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --ink: #17313b;
+  --muted: #6b7f86;
+  --sun: #ffd166;
+  --coral: #ff6b6b;
+  --aqua: #3ddbd9;
+  --leaf: #7bd88f;
+  --sky: #80bfff;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  font-family: 'Nunito', 'Trebuchet MS', sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 12% 12%, rgba(255, 209, 102, 0.32), transparent 26rem),
+    radial-gradient(circle at 88% 8%, rgba(61, 219, 217, 0.28), transparent 24rem),
+    linear-gradient(135deg, #fffdf7 0%, #effcff 48%, #f7fff3 100%);
+  -webkit-font-smoothing: antialiased;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.34;
+  background-image:
+    linear-gradient(rgba(23, 49, 59, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(23, 49, 59, 0.04) 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: linear-gradient(to bottom, black, transparent 82%);
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 bg-[#17313b] hover:bg-[#244c58] text-white font-extrabold py-3 px-6 rounded-2xl transition-all duration-200 shadow-[0_12px_24px_rgba(23,49,59,0.16)] hover:-translate-y-0.5 disabled:opacity-60 disabled:hover:translate-y-0;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 bg-white/85 hover:bg-white text-[#17313b] font-extrabold py-3 px-6 rounded-2xl border border-[#d7ecec] transition-all duration-200 shadow-[0_10px_20px_rgba(23,49,59,0.08)] hover:-translate-y-0.5;
+  }
+  .btn-danger {
+    @apply bg-[#ff6b6b] hover:bg-[#ff5353] text-white font-extrabold py-2 px-4 rounded-xl transition-all duration-200 shadow-sm;
+  }
+  .btn-success {
+    @apply bg-[#35c777] hover:bg-[#28ad65] text-white font-extrabold py-2 px-4 rounded-xl transition-all duration-200 shadow-sm;
+  }
+  .card {
+    @apply bg-white/90 rounded-[1.75rem] border border-white shadow-[0_18px_45px_rgba(23,49,59,0.10)] overflow-hidden backdrop-blur;
+  }
+  .input-field {
+    @apply w-full px-4 py-3.5 bg-white/90 border border-[#d7ecec] rounded-2xl focus:ring-4 focus:ring-[#3ddbd9]/20 focus:border-[#3ddbd9] outline-none transition-all text-[#17313b] placeholder:text-[#8aa0a6];
+  }
+  .eyebrow {
+    @apply text-xs font-black uppercase tracking-[0.18em] text-[#ff6b6b];
+  }
+  .soft-panel {
+    @apply bg-white/70 border border-white rounded-[1.5rem] shadow-[0_14px_34px_rgba(23,49,59,0.08)] backdrop-blur;
+  }
+  .pop-chip {
+    @apply inline-flex items-center rounded-full bg-[#ecfbfa] text-[#177a78] px-3 py-1 text-xs font-black;
+  }
+}
